@@ -3,15 +3,16 @@ const refs = {
   stopBtn: document.querySelector('[data-stop]'),
   body: document.getElementsByTagName('body')[0],
   timer: 1000,
+  intervalId: null,
 };
-
-let intervalId = null;
 
 const clickButtonStart = () => {
   if (refs.stopBtn.attributes.disabled === 'disabled') return;
+
   refs.startBtn.disabled = true;
   refs.stopBtn.disabled = false;
-  intervalId = setInterval(() => {
+
+  refs.intervalId = setInterval(() => {
     refs.body.style.backgroundColor = getRandomHexColor();
   }, refs.timer);
 };
@@ -19,7 +20,8 @@ const clickButtonStart = () => {
 const clickButtonStop = () => {
   refs.startBtn.disabled = false;
   refs.stopBtn.disabled = true;
-  clearInterval(intervalId);
+
+  clearInterval(refs.intervalId);
 };
 
 refs.startBtn.addEventListener('click', clickButtonStart);
