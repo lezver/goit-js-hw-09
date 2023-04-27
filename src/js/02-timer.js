@@ -21,13 +21,11 @@ const options = {
   defaultDate: new Date(),
   minuteIncrement: 1,
   onClose([selectedDates]) {
-    if (options.defaultDate > selectedDates) {
-      refs.startBtn.disabled = true;
-
+    if (options.defaultDate < selectedDates) {
+      refs.startBtn.disabled = false;
+    } else {
       Notiflix.Notify.failure('Please choose a date in the future');
     }
-
-    refs.startBtn.disabled = false;
   },
 };
 
@@ -55,6 +53,7 @@ const convertMs = ms => {
 };
 
 const clickButtonStart = () => {
+  refs.datetime.disabled = true;
   refs.startBtn.disabled = true;
   intervalId = setInterval(() => {
     const deadline = new Date(refs.datetime.value);
@@ -64,7 +63,11 @@ const clickButtonStart = () => {
     refs.hours.textContent = `${pad(hours)}`;
     refs.minutes.textContent = `${pad(minutes)}`;
     refs.seconds.textContent = `${pad(seconds)}`;
-    if (refs.seconds.textContent === '00') clearInterval(intervalId);
+
+    if (refs.seconds.textContent === '00') {
+      clearInterval(intervalId);
+      refs.datetime.disabled = false;
+    }
   }, 1000);
 };
 
